@@ -20,7 +20,7 @@ public class Solution {
              return true;
         if (i<0 || i>=row || j<0 || j>=col || word.charAt(index) != board[i][j])
              return false;
-
+        // 标注走过的
         char cur = board[i][j];
         cur = '#';
         if(backTrack(board, word, i+1, j, index+1))
