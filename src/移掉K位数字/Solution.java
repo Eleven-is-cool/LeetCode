@@ -1,31 +1,31 @@
 package 移掉K位数字;
 
 import java.util.LinkedList;
+import java.util.Stack;
 
 public class Solution {
     public String removeKdigits(String num, int k) {
-        LinkedList<Character> stack = new LinkedList<Character>();
-        for(char digit:num.toCharArray()){
-            while(k>0 && !stack.isEmpty() && stack.peekLast()>digit){
-                stack.removeLast();
-                k--;
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < num.length(); i++){
+            while (!stack.isEmpty() && k > 0 && num.charAt(i) < stack.peek()){
+                stack.pop();
+                k = k - 1;
             }
-            stack.addLast(digit);
+            stack.add(num.charAt(i));
         }
-        for(int i=0;i<k;i++){
-            stack.removeLast();
+        for (int j = 0; j < k; j++){
+            stack.pop();
         }
-
         StringBuilder res = new StringBuilder();
-        boolean front = true;
-        for(char digit:stack){
-            if(front && digit == '0')
+        boolean firstZero = true;
+        for (Character s: stack){
+            if (firstZero && s == '0')
                 continue;
-            front = false;
-            res.append(digit);
+            firstZero = false;
+            res.append(s);
         }
-        if(res.length() == 0)
-            return  "0";
+        if (res.length() == 0)
+            return "0";
         return res.toString();
     }
 }

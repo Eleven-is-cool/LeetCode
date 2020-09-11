@@ -4,37 +4,30 @@ import java.util.Stack;
 
 public class Solution {
     public String removeDuplicateLetters(String s) {
-        // 单调栈
-        // 计算出现字符的次数，为了出栈的时候不将只有一个的元素出栈
-        int[] count = new int[256];
-        for (char c: s.toCharArray()){
-            count[c]++;
-        }
         Stack<Character> stack = new Stack<>();
-        // 用来去重的
-        boolean[] inStack = new boolean[256];
+        char[] sum = new char[256];
         for (char c: s.toCharArray()){
-            // 判断除了自己前面还剩多少个相同的数字
-            count[c]--;
-            if (inStack[c]){
+            sum[c]++;
+        }
+        boolean[] isInStack = new boolean[256];
+        for (char c: s.toCharArray()){
+            sum[c]--;
+            // 如果已经在栈中则继续循环，原因是栈中的元素如果不满足条件会与其他元素比较而被出栈
+            if (isInStack[c-'0'])
                 continue;
-            }
-            // 单调栈思想，将前面比自己大的元素出栈
-            while (!stack.isEmpty() && stack.peek()>c){
-                // 只有自己时，不出栈了，“bcac”
-                if (count[stack.peek()] == 0){
-                    break;
-                }
-                // 出栈并标记为false
-                inStack[stack.pop()] = false;
+            // 1. 栈是否为空
+            // 2. 栈顶元素是否比当前元素大，即单调栈规则
+            // 3. 删除当前元素后，后面是否还有当前元素相同的值
+            while (!stack.isEmpty() && stack.peek()>c && sum[stack.peek()] != 0){
+                isInStack[stack.pop()-'0'] = false;
             }
             stack.push(c);
-            inStack[c] = true;
+            isInStack[c-'0'] = true;
         }
-        StringBuilder sb = new StringBuilder();
-        while (!stack.isEmpty()){
-            sb.append(stack.pop());
+        StringBuilder res = new StringBuilder();
+        for (char c: stack){
+            res.append(c);
         }
-        return sb.reverse().toString();
+        return res.toString();
     }
 }
