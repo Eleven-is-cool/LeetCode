@@ -41,6 +41,7 @@ public class Main {
             //SEE
             char[][] map = new char[][]{{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};
             System.out.println(new Main().helper(map, string));
+
         }
     }
 }
